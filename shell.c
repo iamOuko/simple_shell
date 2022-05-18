@@ -1,27 +1,47 @@
-#include "main.h"
-
+#include "shell.h"
 /**
- * main - Entry point of the program.
- * @ac: The number of parameters passed to the executable file. In the case
- * this variable will not be used.
- * @av: The name of the program.
- * Return: Always 0.
+ * shell - Infinite loop that runs shell
+ * @ac: Arg count
+ * @av: args passed to shell at beginning of prog
+ * @env: Environment
+ * Return: Void
  */
-int main(__attribute__((unused)) int ac, char **av)
+void shell(int ac, char **av, char **env)
 {
 	char *line;
-	size_t size;
-	int command_counter;
+	char **args;
+	int status = 1;
+	char *tmp = NULL;
+	char *er;
+	char *filename;
+	int flow;
 
-	command_counter = 0;
-	signal(SIGINT, SIG_IGN);
+	er = "Error";
 	do {
-		command_counter++;
-		line = NULL;
-		size = 0;
-		parse_line(line, size, command_counter, av);
-
-	} while (1);
-
-	return (0);
+		prompt();
+		line = _getline();
+		args = split_line(line);
+		flow = bridge(args[0], args);
+		if (flow == 2)
+		{
+			filename = args[0];
+			args[0] = find_path(args[0], tmp, er);
+			if (args[0] == er)
+			{
+				args[0] = search_cwd(filename, er);
+				if (args[0] == filename)
+					write(1, er, 5);
+			}
+		}
+		if (args[0] != er)
+			status = execute_prog(args, line, env, flow);
+		free(line);
+		free(args);
+	} while (status);
+	if (!ac)
+		(void)ac;
+	if (!av)
+		(void)av;
+	if (!env)
+		(void)env;
 }

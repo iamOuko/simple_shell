@@ -1,40 +1,37 @@
-.TH man 1 "18 May 2022" "1.0" "Simple Shell man page"
+.TH man 1 "18 May 2022" "1" "Simple Shell"
 .SH NAME
-.B Simple 
-- A basic UNIX command line interpreter.
+.B hsh
+- A simple UNIX command interpreter.
 .SH SYNOPSIS
-Simple can interpret and execute command line arguments read from the standard input.
+.B ./hsh
 .SH DESCRIPTION
-The Simple shell is a program that reads line by line from a file or the terminal line. It then interprets the lines and executes it if the line is a valid command. 
+This program is a simple shell that has been made by the Holberton guidelines. It contains basic features and functions found in other shell programs.
+.SS Overview
+This shell is an executable that reads lines from the prompt, interprets them, and generally executes other commands. It runs by compiling all .c files in the repository to create an executable
+.SS Path Search
+When locating a command, this shell first looks to see if it has an executable by that name in the PATH of env. Then it looks for builtin commands by that name.
 
-.SH USAGE
-All the files are to be compiled on an Ubuntu 14.04 LTS machine with "gcc -Wall -Werror -Wextra -pedantic *.c -o Olaf".
+.SH MODES
+.B hsh
+Interactive mode
+.SS
+EXAMPLE:
+$ ls -l
+.B ./shell
+Non-interactive mode
+.SS
+EXAMPLE:
+$ echo "ls -l" | ./hsh
 
-Once compiled, to start the program, run:
-.br
-$ ./shell
+.SH BUILT-IN COMMANDS
+.B env
+- prints environment
+.B exit
+- exits the shell
 
-To exit the program, run:
-.br
-shell $ exit
-
-.SH BUILT-INS
-The following built-ins are supported by the Simple shell:
-
-.B env - 
-Print the current environment.
-
-.B setenv VARIABLE VALUE - 
-Initialize a new environment variable, or modify an existing one. 
-
-.B unsetenv VARIABLE - 
-Remove an environment variable.
-
-.SH RETURN VALUE
-Simple shell will exit with status 0 unless status is specified.
 .SH SEE ALSO
-.I sh(1)
+.I sh(1), Betty(1)
 .SH BUGS
 No known bugs.
 .SH AUTHOR
-Mellanie Achieng, Ezra Ouko
+Mellanie Achieng and Ezra Ouko
