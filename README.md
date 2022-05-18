@@ -20,8 +20,6 @@ When using this shell, the syntax for running any command follows the familiar s
 Brief description of every file in this repository. Subject to change.
 
 ### Authors
----
-[Mellanie Achieng](https://github.com/MellanieAchiengK)
--
-[Ouko Ezra](https://github.com/iamOuko)
--
+
+1. [Mellanie Achieng](https://github.com/MellanieAchiengK)
+2. [Ouko Ezra](https://github.com/iamOuko)
