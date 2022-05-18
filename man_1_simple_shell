@@ -1,60 +1,37 @@
-.\" Manpage for Simple Shell.
-
-.TH hsh  1 "25 August 2021" "1.0" "Simple Shell man page"
-
+.TH HSH 1 "18 May 2022" "1" "Simple Shell man page"
 .SH NAME
-hsh - Simple Shell
-
+.B hsh
+- A simple UNIX command interpreter.
 .SH SYNOPSIS
-hsh (does not support options)
-
+.B ./hsh
 .SH DESCRIPTION
-Welcome to the ALX Simple Shell project! This program is a simple shell that can be compiled and launched from the command line within any number of Linux versions.
+This program is a simple shell that has been made by the Holberton guidelines. It contains basic features and functions found in other shell programs.
+.SS Overview
+This shell is an executable that reads lines from the prompt, interprets them, and generally executes other commands. It runs by compiling all .c files in the repository to create an executable
+.SS Path Search
+When locating a command, this shell first looks to see if it has an executable by that name in the PATH of env. Then it looks for builtin commands by that name.
 
-.SH OVERVIEW
-The Simple Shell project is a major team project conducted by Mohamed Ikebude Michael and Ojini Ifeoma, for the ALX-Software Engineering program.
-
-.SH RETURN VALUE
-The shell returns the error code given by the last completed command followed by either ctrl-d or exit with no status code.
-
-.SH SYNTAX
-user@dexter$ <command> <flags or options> <argument 1> <argument 2> ...
-
-$ <command> | ./hsh
+.SH MODES
+.B hsh
+Interactive mode
 .SS
-
+EXAMPLE:
+$ ls -l
+.B ./hsh
+Non-interactive mode
 .SS
-EXAMPLE 1:
-MANDALORIAN$ /bin/ls
-.SS
-EXAMPLE 2:
-MANDALORIAN$ ls -l
-.SS
-EXAMPLE 3:
-MANDALORIAN$ cat textfile
-.SS
+EXAMPLE:
+$ echo "ls -l" | ./hsh
 
-
-.SS
-EXAMPLE 4:
-$ echo "ls -l" | ./shell
-
-.SH BUILTIN COMMANDS
-.SS env
-- list the current environment variable
-
-.SS exit
-- exit from shell
-
-.SH BUGS
-No known bugs at this writing (August 25, 2021).
-Please report any issues to the authors.
-
-.SH AUTHOR
-
-Mellanie Achieng
-
-Ezra Ouko
+.SH BUILT-IN COMMANDS
+.B env
+- prints environment
+.B exit
+- exits the shell
 
 .SH SEE ALSO
-sh
+.I sh(1), Betty(1)
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Mellanie Achieng, Ezra Ouko

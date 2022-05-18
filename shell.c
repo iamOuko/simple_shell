@@ -1,118 +1,47 @@
 #include "shell.h"
-#include <string.h>
-
 /**
- * execute - executes the command
- * @cmd: command to run
- * @main_path: path to environment variable
- * Return: 0 on success1 -1 if cmd is exit and 1 on any other error
+ * shell - Infinite loop that runs shell
+ * @ac: Arg count
+ * @av: args passed to shell at beginning of prog
+ * @env: Environment
+ * Return: Void
  */
-int execute(char **cmd, char *main_path)
+void shell(int ac, char **av, char **env)
 {
-	pid_t child_pid;
-	int status;
+	char *line;
+	char **args;
+	int status = 1;
+	char *tmp = NULL;
+	char *er;
+	char *filename;
+	int flow;
 
-	child_pid = fork();
-	if (child_pid == -1)
-	{
-		perror("Error");
-		return (1);
-	}
-	else if (child_pid == 0)
-	{
-		if (**(cmd + 0) == '/')
-		{
-			execve(*(cmd + 0), cmd, environ);
-			if (execve(*(cmd + 0), cmd, environ) == -1)
-			{
-				perror("./shell");
-				exit(1);
-			}
-		}
-		else
-		{
-			_strcat(main_path, "/");
-			_strcat(main_path, cmd[0]);
-			execve(main_path, cmd, environ);
-			if (execve(main_path, cmd, environ) == -1)
-			{
-				perror("./shell");
-				exit(1);
-			}
-		}
-	}
-	else
-		wait(&status);
-
-	return (0);
-}
-
-/**
- *get_path - function to get the path environment variable
- *@path: environment variable
- *Return: 0
- */
-char *get_path(char *path)
-{
-	char *main_path;
-	char *cutpath;
-
-	cutpath = strtok(path, ":");
-	while (cutpath != NULL)
-	{
-		if (!_strcmp(cutpath, "/usr/bin"))
-			main_path = cutpath;
-		cutpath = strtok(NULL, ":");
-	}
-	return (main_path);
-}
-
-
-/**
- * main - main simple shell
- * @argc: number of arguments
- * @argv: list of command line arguments
- * Return: Always 0, -1 on error.
- */
-
-int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
-{
-	int response, character, isPipe = 0;
-	size_t bufsize = BUFSIZ;
-	char **tokens = (char **)malloc(sizeof(char **) * bufsize);
-	char *buffer, *path;
-	char *main_path = (char *)malloc(sizeof(char *) * bufsize);
-
-	buffer = (char *)malloc(sizeof(char *) * bufsize);
-	if (buffer == NULL)
-	{
-		perror("Unable to allocate buffer");
-	}
-	path = _getenv("PATH", environ);
-	main_path = get_path(path);
+	er = "Error";
 	do {
-		if (isatty(fileno(stdin)))
+		prompt();
+		line = _getline();
+		args = split_line(line);
+		flow = bridge(args[0], args);
+		if (flow == 2)
 		{
-			isPipe = 1;
-			_puts("user@dexter$ ");
+			filename = args[0];
+			args[0] = find_path(args[0], tmp, er);
+			if (args[0] == er)
+			{
+				args[0] = search_cwd(filename, er);
+				if (args[0] == filename)
+					write(1, er, 5);
+			}
 		}
-		character = getline(&buffer, &bufsize, stdin);
-		buffer[_strlen(buffer) - 1] = '\0';
-		if (!_strcmp("exit", buffer) || character == EOF)
-		{
-			free(buffer);
-			free(tokens);
-			exit(1);
-		}
-		tokens = stringToTokens(buffer);
-		response = execute(tokens, main_path);
-	} while (isPipe && response != -1);
-	if (isPipe && response == -1)
-	{
-		free(buffer);
-		free(main_path);
-	}
-	free(buffer);
-	free(tokens);
-	return (0);
+		if (args[0] != er)
+			status = execute_prog(args, line, env, flow);
+		free(line);
+		free(args);
+	} while (status);
+	if (!ac)
+		(void)ac;
+	if (!av)
+		(void)av;
+	if (!env)
+		(void)env;
 }
